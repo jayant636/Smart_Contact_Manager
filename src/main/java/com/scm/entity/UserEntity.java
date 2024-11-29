@@ -12,6 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Builder
 @Table(name = "User")
 public class UserEntity {
 
@@ -27,9 +28,9 @@ public class UserEntity {
     private String profilePic;
     private String phoneNumber;
 
-    private boolean enabled = false;
-    private boolean emailVerified=false;
-    private boolean phoneVerified=false;
+    private boolean enabled;
+    private boolean emailVerified;
+    private boolean phoneVerified;
 
     private Providers provider=Providers.SELF;
     private String providerUserId;

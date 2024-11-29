@@ -1,13 +1,17 @@
 package com.scm.controllers;
 
+import com.scm.entity.UserEntity;
+import com.scm.forms.UserForm;
+import com.scm.services.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
-
+@RequiredArgsConstructor
 public class PageController {
+    private final UserService userService;
 
     @RequestMapping(path = "/home")
     public String name(Model model){
@@ -44,8 +48,30 @@ public class PageController {
     }
 
     @GetMapping(path = "/register")
-    public String signup(){
+    public String signup(Model model){
+        UserForm userForm = new UserForm();
+        userForm.setName("Jayant");
+        model.addAttribute("userForm",userForm);
         return "Register";
+    }
+
+    @RequestMapping(value = "/do-register",method = RequestMethod.POST)
+    public String processRegister(@ModelAttribute UserForm userForm){
+        System.out.println("Do Register");
+        System.out.println(userForm);
+
+        UserEntity userEntity = UserEntity.builder()
+                .name(userForm.getName())
+                .email(userForm.getEmail())
+                .password(userForm.getPassword())
+                .about(userForm.getAbout())
+                .phoneNumber(userForm.getPhoneNumber())
+                .profilePic("https://shorturl.at/bBJ70")
+                .build();
+        userService.saveUser(userEntity);
+
+        //todo validate the form
+        return "redirect:/register";
     }
 
 }
