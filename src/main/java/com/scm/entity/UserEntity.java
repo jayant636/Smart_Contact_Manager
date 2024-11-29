@@ -32,6 +32,7 @@ public class UserEntity {
     private boolean emailVerified;
     private boolean phoneVerified;
 
+    @Enumerated(value = EnumType.STRING)
     private Providers provider=Providers.SELF;
     private String providerUserId;
 
