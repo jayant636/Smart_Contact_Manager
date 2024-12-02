@@ -18,6 +18,11 @@ import org.springframework.web.bind.annotation.*;
 public class PageController {
     private final UserService userService;
 
+    @GetMapping("/")
+    public String index() {
+        return "redirect:/home";
+    }
+
     @RequestMapping(path = "/home")
     public String name(Model model){
         model.addAttribute("name","Substring TXhnologies");
@@ -55,7 +60,7 @@ public class PageController {
     @GetMapping(path = "/register")
     public String signup(Model model){
         UserForm userForm = new UserForm();
-        userForm.setName("Jayant");
+//        userForm.setName("Jayant");
         model.addAttribute("userForm",userForm);
         return "Register";
     }

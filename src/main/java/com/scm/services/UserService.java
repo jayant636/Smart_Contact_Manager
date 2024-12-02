@@ -2,8 +2,11 @@ package com.scm.services;
 
 import com.scm.entity.UserEntity;
 import com.scm.exceptions.ResourceNotFoundException;
+import com.scm.helper.AppConstants;
 import com.scm.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,16 +17,19 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UserService implements UserServiceInterface{
 
+    @Autowired
     private final UserRepository userRepository;
 
-
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public UserEntity saveUser(UserEntity userEntity) {
 //        generate userID before creating user
         String userId = UUID.randomUUID().toString();
         userEntity.setUserId(userId);
-
+        userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
+        userEntity.setRoleList(List.of(AppConstants.ROLE_USER));
         return userRepository.save(userEntity);
     }
 
@@ -64,8 +70,8 @@ public class UserService implements UserServiceInterface{
 
     @Override
     public boolean isUSerExistByEmail(String email) {
-        UserEntity userEntity1 = userRepository.findByemail(email).orElse(null);
-        return userEntity1!=null ? true:false;
+        UserEntity userEntity1 = userRepository.findByEmail(email).orElse(null);
+        return userEntity1 != null;
     }
 
     @Override
