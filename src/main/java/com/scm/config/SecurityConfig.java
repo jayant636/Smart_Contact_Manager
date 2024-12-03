@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -16,6 +17,9 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
+
+    @Autowired
+    private OAuthAuthenticationSuccessHandler handler;
 
     @Autowired
     private final SecurityCustomUserDetailsService userDetailService;
@@ -49,10 +53,20 @@ public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws
 
 
         });
+//        httpSecurity.oauth2Login(Customizer.withDefaults());
+
+        httpSecurity.oauth2Login(oauth ->{
+            oauth.loginPage("/login");
+            oauth.successHandler(handler);
+        });
+
         httpSecurity.csrf(AbstractHttpConfigurer::disable);
         httpSecurity.logout(logoutForm ->{
             logoutForm.logoutUrl("/do-logout");
         });
+
+
+
         return httpSecurity.build();
 }
 
