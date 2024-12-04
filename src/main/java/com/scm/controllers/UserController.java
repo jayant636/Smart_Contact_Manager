@@ -1,6 +1,7 @@
 package com.scm.controllers;
 
 import com.scm.helper.Helper;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,9 +18,8 @@ public class UserController {
     }
 
     @GetMapping(path = "/profile")
-    public String userProfile(Principal principal){
-        String name = principal.getName();
-        String username =  Helper.getEmailOfLoggedInUser(principal);
+    public String userProfile(Authentication authentication){
+        String username =  Helper.getEmailOfLoggedInUser( authentication);
         return "user/profile";
     }
 }
