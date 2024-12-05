@@ -78,4 +78,9 @@ public class UserService implements UserServiceInterface{
     public List<UserEntity> getAllUsers() {
         return userRepository.findAll();
     }
+
+    @Override
+    public UserEntity getUserByEmail(String email) {
+       return userRepository.findByEmail(email).orElse(null);
+    }
 }

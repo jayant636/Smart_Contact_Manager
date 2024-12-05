@@ -14,4 +14,5 @@ public interface UserServiceInterface {
     boolean isUserExist(String userId);
     boolean isUSerExistByEmail(String email);
     List<UserEntity> getAllUsers();
+    UserEntity getUserByEmail(String email);
 }
