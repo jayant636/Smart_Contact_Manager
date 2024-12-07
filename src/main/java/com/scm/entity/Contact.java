@@ -28,6 +28,7 @@ public class Contact {
     private boolean favourite = false;
     private String websiteLinks;
     private String linkedInLink;
+    private String cloudinaryImagePublicId;
 
     @ManyToOne
     private UserEntity user;

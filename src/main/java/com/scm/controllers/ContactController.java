@@ -7,6 +7,7 @@ import com.scm.helper.Helper;
 import com.scm.helper.Message;
 import com.scm.helper.MessageType;
 import com.scm.services.ContactService;
+import com.scm.services.ImageService;
 import com.scm.services.UserService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -19,6 +20,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.UUID;
+
 @Controller
 @RequestMapping(path = "/user/contacts")
 public class ContactController {
@@ -27,6 +30,9 @@ public class ContactController {
     private ContactService contactService;
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ImageService imageService;
 
     @RequestMapping(path = "/add")
     public String addContact(Model model){
@@ -46,6 +52,9 @@ public class ContactController {
 
         String username = Helper.getEmailOfLoggedInUser(authentication);
         UserEntity userEntity = userService.getUserByEmail(username);
+        String fileName = UUID.randomUUID().toString();
+        String fileURL =  imageService.uploadImage(contactForm.getContactImage(),fileName);
+
         Contact contact = new Contact();
         contact.setName(contactForm.getName());
         contact.setEmail(contactForm.getEmail());
@@ -56,11 +65,12 @@ public class ContactController {
         contact.setUser(userEntity);
         contact.setLinkedInLink(contactForm.getLinkedInLink());
         contact.setWebsiteLinks(contactForm.getWebsiteLinks());
-
+        contact.setPicture(fileURL);
+        contact.setCloudinaryImagePublicId(fileName);
         contactService.save(contact);
        System.out.println(contactForm);
 
        session.setAttribute("message",Message.builder().content("Please correct the following errors").type(MessageType.green).build());
-      return "redirect:/user/add_contact";
+      return "redirect:/user/contacts/add";
     }
 }
