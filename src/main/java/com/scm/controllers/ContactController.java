@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -73,4 +74,15 @@ public class ContactController {
        session.setAttribute("message",Message.builder().content("Please correct the following errors").type(MessageType.green).build());
       return "redirect:/user/contacts/add";
     }
+
+//    view contacts
+    @RequestMapping
+    public String viewContacts(Model model , Authentication authentication){
+       String username =  Helper.getEmailOfLoggedInUser(authentication);
+       UserEntity userEntity =  userService.getUserByEmail(username);
+       List<Contact> contacts = contactService.getByUser(userEntity);
+       model.addAttribute("contacts",contacts);
+      return "user/contacts";
+    }
 }
+

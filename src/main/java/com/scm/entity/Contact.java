@@ -25,7 +25,7 @@ public class Contact {
     private String address;
     private String picture;
     private String description;
-    private boolean favourite = false;
+    private boolean favourite;
     private String websiteLinks;
     private String linkedInLink;
     private String cloudinaryImagePublicId;

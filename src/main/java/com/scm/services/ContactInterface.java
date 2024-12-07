@@ -1,6 +1,7 @@
 package com.scm.services;
 
 import com.scm.entity.Contact;
+import com.scm.entity.UserEntity;
 
 import java.util.List;
 
@@ -13,6 +14,5 @@ public interface ContactInterface {
     void delete(String id);
     List<Contact> search(String name,String email,String phoneNumber);
     List<Contact> getByUserId(String userId);
-
-
+    List<Contact> getByUser(UserEntity userEntity);
 }
