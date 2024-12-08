@@ -3,6 +3,7 @@ package com.scm.controllers;
 import com.scm.entity.Contact;
 import com.scm.entity.UserEntity;
 import com.scm.forms.ContactForm;
+import com.scm.helper.AppConstants;
 import com.scm.helper.Helper;
 import com.scm.helper.Message;
 import com.scm.helper.MessageType;
@@ -12,6 +13,7 @@ import com.scm.services.UserService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +21,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.UUID;
@@ -77,11 +80,16 @@ public class ContactController {
 
 //    view contacts
     @RequestMapping
-    public String viewContacts(Model model , Authentication authentication){
+    public String viewContacts(@RequestParam(value = "page",defaultValue = "0") int page ,
+                               @RequestParam(value = "size" ,defaultValue = AppConstants.PAGE_SIZE+"") int size ,
+                               @RequestParam(value = "sortBy" , defaultValue = "name") String sortBy ,
+                               @RequestParam(value = "direction",defaultValue = "asc") String direction ,
+                               Model model , Authentication authentication){
        String username =  Helper.getEmailOfLoggedInUser(authentication);
        UserEntity userEntity =  userService.getUserByEmail(username);
-       List<Contact> contacts = contactService.getByUser(userEntity);
-       model.addAttribute("contacts",contacts);
+       Page<Contact> pageContact = contactService.getByUser(userEntity,page,size,sortBy,direction);
+       model.addAttribute("pageContact",pageContact);
+        model.addAttribute("pageSize", AppConstants.PAGE_SIZE);
       return "user/contacts";
     }
 }
