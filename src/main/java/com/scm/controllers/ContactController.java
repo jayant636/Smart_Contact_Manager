@@ -92,5 +92,20 @@ public class ContactController {
         model.addAttribute("pageSize", AppConstants.PAGE_SIZE);
       return "user/contacts";
     }
+
+    @RequestMapping("/search")
+    public String searchHandler(     @RequestParam("field") String field, @RequestParam("keyword") String value ,@RequestParam (value = "size",defaultValue = AppConstants.PAGE_SIZE+"") int size, @RequestParam (value = "page",defaultValue = "0") int page, @RequestParam(value = "sortBy",defaultValue = "name") String sortBy,@RequestParam(value = "direction",defaultValue = "asc") String direction , Model model ,Authentication authentication){
+        var user = userService.getUserByEmail(Helper.getEmailOfLoggedInUser(authentication));
+        Page<Contact> pageContact = null;
+        if(field.equalsIgnoreCase("name")){
+           pageContact =  contactService.searchByName(value,page,size,sortBy,direction,user);
+        }else if(field.equalsIgnoreCase("email")){
+            pageContact =  contactService.searchByEmail(value,page,size,sortBy,direction,user);
+        }else if(field.equalsIgnoreCase("phone")){
+            pageContact =  contactService.searchByPhoneNumber(value,page,size,sortBy,direction,user);
+        }
+        model.addAttribute("pageContact",pageContact);
+        return "user/search";
+    }
 }
 
