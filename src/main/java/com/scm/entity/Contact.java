@@ -1,5 +1,6 @@
 package com.scm.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,6 +32,7 @@ public class Contact {
     private String cloudinaryImagePublicId;
 
     @ManyToOne
+    @JsonIgnore
     private UserEntity user;
 
     @OneToMany(mappedBy = "contact" ,cascade = CascadeType.ALL,fetch = FetchType.LAZY)
