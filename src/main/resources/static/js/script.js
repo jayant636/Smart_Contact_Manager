@@ -1,62 +1,63 @@
-console.log("script.js");
+console.log("Script loaded");
 
-
-//Page Theme start
-
+// change theme work
 let currentTheme = getTheme();
+//initial -->
 
-document.addEventListener('DOMContentLoaded',()=>{
- changeTheme();
-})
+document.addEventListener("DOMContentLoaded", () => {
+  changeTheme();
+});
 
+//TODO:
+function changeTheme() {
+  //set to web page
 
-function changeTheme(){
- document.querySelector("html").classList.add(currentTheme);
+  changePageTheme(currentTheme, "");
+  //set the listener to change theme button
+  const changeThemeButton = document.querySelector("#theme_change_button");
 
- changePageTheme(currentTheme," ");
- const changeThemeButton =  document.querySelector('#theme_change_button');
-
-// set the listener to change theme button
-  changeThemeButton.addEventListener('click',()=>{
-    console.log("Button Clicked");
-     let oldTheme = currentTheme;
-//    remove the current theme
-    if(currentTheme == "dark"){
+  changeThemeButton.addEventListener("click", (event) => {
+    let oldTheme = currentTheme;
+    console.log("change theme button clicked");
+    if (currentTheme === "dark") {
+      //theme ko light
       currentTheme = "light";
-    }else{
-    currentTheme = "dark";
+    } else {
+      //theme ko dark
+      currentTheme = "dark";
     }
-
-   changePageTheme(currentTheme,oldTheme);
+    console.log(currentTheme);
+    changePageTheme(currentTheme, oldTheme);
   });
 }
 
 //set theme to localstorage
-function setTheme(theme){
-  localStorage.setItem("theme",theme);
+function setTheme(theme) {
+  localStorage.setItem("theme", theme);
 }
 
-//get theme from local storage
-function getTheme(){
-  let theme =  localStorage.getItem("theme");
-  if(theme){
-   return theme;
-  }else{
-  return "light";
+//get theme from localstorage
+function getTheme() {
+  let theme = localStorage.getItem("theme");
+  return theme ? theme : "light";
+}
+
+//change current page theme
+function changePageTheme(theme, oldTheme) {
+  //localstorage mein update karenge
+  setTheme(currentTheme);
+  //remove the current theme
+
+  if (oldTheme) {
+    document.querySelector("html").classList.remove(oldTheme);
   }
+  //set the current theme
+  document.querySelector("html").classList.add(theme);
+
+  // change the text of button
+  document
+    .querySelector("#theme_change_button")
+    .querySelector("span").textContent = theme == "light" ? "Dark" : "Light";
 }
 
-function changePageTheme(theme,oldTheme){
-
-//    update the theme in localStorage
-      setTheme(currentTheme);
-      if(oldTheme){
-            document.querySelector("html").classList.remove(oldTheme);
-
-      }
-      document.querySelector('html').classList.add(theme);
-      document.querySelector('#theme_change_button').querySelector("span").textContent = theme == "light" ? "Dark" : "Light";
-
-      }
-
-//  Page Theme End
+//change page change theme
