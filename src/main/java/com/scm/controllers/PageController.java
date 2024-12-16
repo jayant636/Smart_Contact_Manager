@@ -55,7 +55,7 @@ public class PageController {
 //    For login page
     @GetMapping(path = "/login")
     public String login(){
-        return "Login";
+        return "login";
     }
 
 

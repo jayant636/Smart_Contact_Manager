@@ -21,15 +21,11 @@ public class RootController {
            return;
        }
 
-        String username =  Helper.getEmailOfLoggedInUser( authentication);
+        String username =  Helper.getEmailOfLoggedInUser(authentication);
         UserEntity userEntity = userService.getUserByEmail(username);
+        model.addAttribute("loggedInUser",userEntity);
 
-        if(userEntity == null){
-            model.addAttribute("loggedInUser",null);
-        }else{
-            model.addAttribute("loggedInUser",userEntity);
 
-        }
     }
 
 }

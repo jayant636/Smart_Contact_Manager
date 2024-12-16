@@ -22,12 +22,12 @@ public class UserController {
 
 
 
-    @GetMapping(path = "/dashboard")
+    @RequestMapping(value = "/dashboard")
     public String userDashboard(){
         return "user/dashboard";
     }
 
-    @GetMapping(path = "/profile")
+    @RequestMapping(value = "/profile")
     public String userProfile(Model model , Authentication authentication){
 
         return "user/profile";
