@@ -28,7 +28,20 @@ public class ContactService implements ContactInterface {
 
     @Override
     public Contact update(Contact contact) {
-        return null;
+       var contactOld = contactRepository.findById(contact.getId()).orElseThrow(()->new RuntimeException("Contact not found"));
+       contactOld.setName(contact.getName());
+       contactOld.setEmail(contact.getEmail());
+       contactOld.setPhoneNumber(contact.getPhoneNumber());
+       contactOld.setAddress(contact.getAddress());
+       contactOld.setDescription(contact.getDescription());
+       contactOld.setPicture(contact.getPicture());
+       contactOld.setFavourite(contact.isFavourite());
+       contactOld.setWebsiteLinks(contact.getWebsiteLinks());
+       contactOld.setLinkedInLink(contact.getLinkedInLink());
+       contactOld.setCloudinaryImagePublicId(contact.getCloudinaryImagePublicId());
+
+       return contactRepository.save(contactOld);
+
     }
 
     @Override

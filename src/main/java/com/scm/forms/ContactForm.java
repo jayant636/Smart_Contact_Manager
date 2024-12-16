@@ -26,5 +26,6 @@ public class ContactForm {
     private String websiteLinks;
     private String linkedInLink;
     private MultipartFile contactImage;
+    private String picture;
 
 }
